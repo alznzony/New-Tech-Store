@@ -18,6 +18,7 @@ import Header from "./components/Header";
 import Footer from "./components/Footer";
 import ScrollToTopButton from "./components/ScrollToTopButton";
 import WhatsAppButton from "./components/WhatsAppButton";
+import ScrollToTop from "./components/ScrollToTop"; // تم استيراد المكون الجديد
 
 import { CartProvider } from "./context/CartContext";
 
@@ -44,6 +45,9 @@ function App() {
     >
       <CartProvider>
         <Router>
+          {/* إضافة مكون ScrollToTop هنا */}
+          <ScrollToTop />
+
           {/* Toast Notification */}
           {toastMessage && (
             <div className="fixed bottom-4 right-4 bg-green-500 text-white px-4 py-2 rounded shadow-lg z-50 animate-fade-in">
