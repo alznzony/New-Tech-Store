@@ -41,7 +41,14 @@ export const CartProvider = ({ children }) => {
   const clearCart = () => {
     if (confirm("هل أنت متأكد من إفراغ السلة؟")) {
       setCart([]);
+      localStorage.removeItem("cart"); // ✅ حذف التخزين المحلي
     }
+  };
+
+  // ✅ دالة تفريغ مباشر بدون تأكيد (تُستخدم بعد إتمام الطلب)
+  const forceClearCart = () => {
+    setCart([]);
+    localStorage.removeItem("cart");
   };
 
   const setToast = (message) => {
@@ -57,6 +64,7 @@ export const CartProvider = ({ children }) => {
         removeFromCart,
         updateQuantity,
         clearCart,
+        forceClearCart, // ✅ أضفنا الدالة هنا
         toastMessage,
       }}
     >

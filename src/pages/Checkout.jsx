@@ -3,13 +3,16 @@ import { useNavigate } from "react-router-dom";
 import { useCart } from "../context/CartContext";
 
 const Checkout = () => {
-  const { cart } = useCart();
+  const { cart, forceClearCart } = useCart(); // ✅ استخدم الدالة الجديدة
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [altPhone, setAltPhone] = useState("");
   const [address, setAddress] = useState("");
   const [notes, setNotes] = useState("");
+  const [submitted, setSubmitted] = useState(false);
   const navigate = useNavigate();
+
+  const successSound = new Audio("/sounds/success.mp3");
 
   const calculateSubtotal = () => {
     return cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
@@ -18,11 +21,6 @@ const Checkout = () => {
   const getTotalWithDelivery = () => {
     const subtotal = calculateSubtotal();
     return subtotal >= 500000 ? subtotal : subtotal + 3000;
-  };
-
-  const clearCart = () => {
-    localStorage.removeItem("cart");
-    navigate("/");
   };
 
   const handleSendWhatsApp = () => {
@@ -63,38 +61,77 @@ ${itemsList}
     const waNumber = "249916424528";
     const waLink = `https://wa.me/${waNumber}?text=${encodedMessage}`;
 
+    // تشغيل صوت النجاح
+    successSound.play();
+
+    // فتح رابط واتساب
     window.open(waLink, "_blank");
-    clearCart();
+
+    // تفريغ السلة مباشرة
+    forceClearCart();
+
+    // عرض إشعار والتنقل بعد 4 ثوانٍ
+    setSubmitted(true);
+    setTimeout(() => {
+      navigate("/");
+    }, 4000);
   };
 
   return (
     <div className="max-w-3xl mx-auto p-6">
+      {/* شريط التقدم */}
+      <div className="mb-6">
+        <div className="relative pt-1">
+          <div className="overflow-hidden h-2 text-xs flex rounded bg-green-200">
+            <div
+              style={{ width: "100%" }}
+              className="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-green-500"
+            ></div>
+          </div>
+          <p className="text-center text-sm mt-2 text-green-600 font-semibold">
+            الخطوة الأخيرة: تأكيد الطلب
+          </p>
+        </div>
+      </div>
+
       <h2 className="text-2xl font-bold mb-4">إتمام الطلب</h2>
 
       <div className="space-y-4">
-        <input
-          type="text"
-          placeholder="الاسم الكامل *"
-          className="w-full p-3 border rounded"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          required
-        />
-        <input
-          type="tel"
-          placeholder="رقم الهاتف *"
-          className="w-full p-3 border rounded"
-          value={phone}
-          onChange={(e) => setPhone(e.target.value)}
-          required
-        />
-        <input
-          type="tel"
-          placeholder="رقم هاتف آخر (اختياري)"
-          className="w-full p-3 border rounded"
-          value={altPhone}
-          onChange={(e) => setAltPhone(e.target.value)}
-        />
+        <div className="relative">
+          <input
+            type="text"
+            placeholder="الاسم الكامل *"
+            className="w-full p-3 pr-10 border rounded"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            required
+          />
+          <span className="absolute right-3 top-3 text-gray-400">👤</span>
+        </div>
+
+        <div className="relative">
+          <input
+            type="tel"
+            placeholder="رقم الهاتف *"
+            className="w-full p-3 pr-10 border rounded"
+            value={phone}
+            onChange={(e) => setPhone(e.target.value)}
+            required
+          />
+          <span className="absolute right-3 top-3 text-gray-400">📞</span>
+        </div>
+
+        <div className="relative">
+          <input
+            type="tel"
+            placeholder="رقم هاتف آخر (اختياري)"
+            className="w-full p-3 pr-10 border rounded"
+            value={altPhone}
+            onChange={(e) => setAltPhone(e.target.value)}
+          />
+          <span className="absolute right-3 top-3 text-gray-400">📱</span>
+        </div>
+
         <textarea
           placeholder="العنوان بالتفصيل *"
           className="w-full p-3 border rounded"
@@ -103,6 +140,7 @@ ${itemsList}
           onChange={(e) => setAddress(e.target.value)}
           required
         ></textarea>
+
         <textarea
           placeholder="ملاحظات إضافية (اختياري)"
           className="w-full p-3 border rounded"
@@ -126,14 +164,34 @@ ${itemsList}
           </ul>
         )}
 
-        <div className="mt-4 text-right">
+        <div className="bg-gray-100 p-4 mt-4 rounded-lg shadow-sm">
+          <h4 className="text-md font-bold mb-2">💳 ملخص الفاتورة</h4>
           <p>💰 الإجمالي: {calculateSubtotal()} ج.س</p>
-          {calculateSubtotal() < 500000 && <p>🚚 رسوم الترحيل: 3000 ج.س</p>}
-          <p className="font-bold">
+          {calculateSubtotal() < 500000 && <p>🚚 رسوم التوصيل: 3000 ج.س</p>}
+          <p className="font-bold text-green-700 mt-2">
             ✅ الإجمالي الكلي: {getTotalWithDelivery()} ج.س
           </p>
         </div>
       </div>
+
+      {submitted && (
+        <div
+          style={{
+            position: "fixed",
+            bottom: "20px",
+            right: "20px",
+            backgroundColor: "#16a34a",
+            color: "white",
+            padding: "1rem 1.5rem",
+            borderRadius: "0.5rem",
+            boxShadow: "0 0 10px rgba(0,0,0,0.2)",
+            transition: "all 0.5s ease-in-out",
+            zIndex: 9999,
+          }}
+        >
+          ✅ تم إرسال الطلب بنجاح!
+        </div>
+      )}
 
       <button
         onClick={handleSendWhatsApp}

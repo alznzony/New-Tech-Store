@@ -21,9 +21,10 @@ export default function Supervisor() {
     type: "",
     condition: "",
     image: "",
+    images: "[]",
     description: "",
     brand: "",
-    specs: "{}", // نص JSON
+    specs: "{}",
   });
   const [editId, setEditId] = useState(null);
   const navigate = useNavigate();
@@ -52,16 +53,20 @@ export default function Supervisor() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    let parsedSpecs;
+    let parsedSpecs, parsedImages;
     try {
       parsedSpecs = JSON.parse(form.specs);
-      if (typeof parsedSpecs !== "object" || Array.isArray(parsedSpecs)) {
-        throw new Error();
+      parsedImages = JSON.parse(form.images);
+      if (!Array.isArray(parsedImages)) {
+        throw new Error("يجب أن تكون الصور مصفوفة");
       }
-    } catch {
-      alert(
-        'صيغة المواصفات غير صحيحة! يجب أن تكون كائن JSON مثل: {"الذاكرة": "128GB"}'
-      );
+    } catch (err) {
+      alert(`خطأ في صيغة البيانات: ${err.message}`);
+      return;
+    }
+
+    if (!form.image && parsedImages.length === 0) {
+      alert("يجب إضافة صورة رئيسية على الأقل");
       return;
     }
 
@@ -72,6 +77,7 @@ export default function Supervisor() {
       type: form.type,
       condition: form.condition,
       image: form.image,
+      images: parsedImages,
       description: form.description,
       brand: form.brand,
       specs: parsedSpecs,
@@ -102,6 +108,7 @@ export default function Supervisor() {
       type: "",
       condition: "",
       image: "",
+      images: "[]",
       description: "",
       brand: "",
       specs: "{}",
@@ -117,6 +124,7 @@ export default function Supervisor() {
       type: product.type,
       condition: product.condition,
       image: product.image,
+      images: JSON.stringify(product.images || []),
       description: product.description,
       brand: product.brand,
       specs: JSON.stringify(product.specs || {}, null, 2),
@@ -185,15 +193,50 @@ export default function Supervisor() {
               dir="rtl"
             />
 
-            <input
-              type="text"
-              placeholder="رابط الصورة"
-              value={form.image}
-              onChange={(e) => setForm({ ...form, image: e.target.value })}
-              required
-              className="w-full border border-gray-300 p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-              dir="ltr"
-            />
+            <div className="space-y-4">
+              <div>
+                <label className="block font-medium mb-2">
+                  الصورة الرئيسية *
+                </label>
+                <input
+                  type="text"
+                  placeholder="رابط الصورة الرئيسية"
+                  value={form.image}
+                  onChange={(e) => setForm({ ...form, image: e.target.value })}
+                  required
+                  className="w-full border border-gray-300 p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  dir="ltr"
+                />
+              </div>
+
+              <div>
+                <label className="block font-medium mb-2">الصور الإضافية</label>
+                <textarea
+                  placeholder={`مثال:\nhttps://example.com/image2.jpg\nhttps://example.com/image3.jpg`}
+                  value={
+                    form.images === "[]"
+                      ? ""
+                      : JSON.parse(form.images).join("\n")
+                  }
+                  onChange={(e) => {
+                    const imageLinks = e.target.value
+                      .split("\n")
+                      .map((link) => link.trim())
+                      .filter((link) => link !== "");
+                    setForm({
+                      ...form,
+                      images: JSON.stringify(imageLinks),
+                    });
+                  }}
+                  className="w-full border border-gray-300 p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono text-sm"
+                  rows={3}
+                  dir="ltr"
+                />
+                <p className="text-xs text-gray-500 mt-1">
+                  سطر لكل صورة - سيتم حفظها كصور إضافية للمنتج
+                </p>
+              </div>
+            </div>
 
             <textarea
               placeholder="الوصف"
@@ -302,8 +345,7 @@ export default function Supervisor() {
                   <div className="mr-4 flex-1">
                     <h3 className="font-semibold text-lg">{product.name}</h3>
                     <p className="text-sm text-gray-600">
-                      {product.brand} - {product.category} - {product.type} -{" "}
-                      {product.condition}
+                      {product.brand} • {product.images?.length || 0}+ صور
                     </p>
                     <p className="text-blue-700 font-bold">
                       {product.price} ر.س
