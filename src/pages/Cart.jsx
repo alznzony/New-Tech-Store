@@ -18,7 +18,7 @@ export default function Cart() {
           لم تقم بإضافة أي منتجات بعد
         </p>
         <Link
-          to="/phones"
+          to="/all-products"
           className="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2 rounded-lg inline-block transition-colors"
         >
           تصفح المنتجات
@@ -60,17 +60,21 @@ export default function Cart() {
                 key={item.id}
                 className="border-b dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800"
               >
-                <td className="p-3 flex items-center gap-3">
-                  <img
-                    src={item.image}
-                    alt={item.name}
-                    className="w-16 h-16 object-contain rounded"
-                  />
-                  <span className="font-medium text-gray-800 dark:text-gray-200">
-                    {item.name}
-                  </span>
+                <td className="p-3">
+                  <div className="flex items-center gap-3">
+                    <img
+                      src={item.image}
+                      alt={item.name}
+                      className="w-16 h-16 object-contain rounded bg-white border shrink-0"
+                    />
+                    <div className="flex flex-col">
+                      <span className="font-medium text-gray-800 dark:text-gray-200 break-words">
+                        {item.name}
+                      </span>
+                    </div>
+                  </div>
                 </td>
-                <td className="p-3 text-gray-700 dark:text-gray-300">
+                <td className="p-3 text-gray-700 dark:text-gray-300 whitespace-nowrap">
                   {item.price.toLocaleString()} ج.س
                 </td>
                 <td className="p-3">
@@ -90,7 +94,7 @@ export default function Cart() {
                     </button>
                   </div>
                 </td>
-                <td className="p-3 font-medium text-gray-800 dark:text-gray-200">
+                <td className="p-3 font-medium text-gray-800 dark:text-gray-200 whitespace-nowrap">
                   {(item.price * item.quantity).toLocaleString()} ج.س
                 </td>
                 <td className="p-3 text-center">

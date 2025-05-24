@@ -33,7 +33,6 @@ export default function Wearables() {
     fetchWearables();
   }, []);
 
-  // تصفية مع البحث والفلترة
   const displayedProducts = wearables.filter((product) => {
     const matchesSearch =
       product.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -53,7 +52,7 @@ export default function Wearables() {
   if (loading) {
     return (
       <div className="flex justify-center items-center h-64">
-        <p className="text-lg">جاري تحميل المنتجات...</p>
+        <p className="text-lg dark:text-white">جاري تحميل المنتجات...</p>
       </div>
     );
   }
@@ -61,7 +60,7 @@ export default function Wearables() {
   if (error) {
     return (
       <div className="flex flex-col justify-center items-center h-64 gap-4">
-        <p className="text-lg text-red-500">{error}</p>
+        <p className="text-lg text-red-500 dark:text-red-400">{error}</p>
         <button
           onClick={() => window.location.reload()}
           className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
@@ -73,7 +72,7 @@ export default function Wearables() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="container mx-auto px-4 py-8 dark:bg-gray-900 dark:text-white">
       <h1 className="text-3xl font-bold mb-6 text-center">
         الإلكترونيات القابلة للارتداء
       </h1>
@@ -84,14 +83,14 @@ export default function Wearables() {
           placeholder="ابحث عن منتج..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          className="flex-grow p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          className="flex-grow p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-800 dark:border-gray-700 dark:placeholder-gray-400"
           dir="rtl"
         />
 
         <select
           value={selectedType}
           onChange={(e) => setSelectedType(e.target.value)}
-          className="p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          className="p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-800 dark:border-gray-700"
           dir="rtl"
         >
           <option value="الكل">الكل</option>
@@ -103,7 +102,7 @@ export default function Wearables() {
 
       {displayedProducts.length === 0 ? (
         <div className="text-center py-12">
-          <p className="text-gray-500 text-lg mb-6">
+          <p className="text-gray-500 dark:text-gray-400 text-lg mb-6">
             لا توجد منتجات متطابقة مع بحثك
           </p>
           <button
