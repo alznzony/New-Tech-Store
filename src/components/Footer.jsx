@@ -24,10 +24,10 @@ export default function Footer({ darkMode }) {
             <ul className="space-y-2">
               {[
                 { path: "/", text: "الرئيسية" },
-                { path: "/phones", text: "الموبايلات" },
+                { path: "/phones", text: "الهواتف" },
                 { path: "/accessories", text: "الإكسسوارات" },
                 { path: "/about", text: "عن المتجر" },
-                { path: "/policy", text: "سياسة الاستخدام" },
+                { path: "/Wearables", text: "الإلكترونيات القابلة للارتداء" },
               ].map((item, index) => (
                 <li key={index}>
                   <Link
@@ -48,7 +48,7 @@ export default function Footer({ darkMode }) {
             <ul className="space-y-2">
               <li className="flex items-center gap-2 text-gray-600 dark:text-gray-300">
                 <Mail size={16} />
-                <span>info@newtech.sd</span>
+                <span>newtechsudan0@gmail.com</span>
               </li>
               <li className="flex items-center gap-2 text-gray-600 dark:text-gray-300">
                 <svg
@@ -58,7 +58,17 @@ export default function Footer({ darkMode }) {
                 >
                   <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z" />
                 </svg>
-                <span>+249 123 456 789</span>
+                <span>0916424528</span>
+              </li>
+              <li className="flex items-center gap-2 text-gray-600 dark:text-gray-300">
+                <svg
+                  className="w-4 h-4"
+                  fill="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
+                </svg>
+                <span>السودان - بورتسودان</span>
               </li>
             </ul>
           </div>
@@ -91,8 +101,8 @@ export default function Footer({ darkMode }) {
         </div>
 
         <div className="border-t dark:border-gray-700 mt-8 pt-6 text-center text-gray-500 dark:text-gray-400">
-          <p>© {new Date().getFullYear()} نيو تك. جميع الحقوق محفوظة.</p>
-          <p> صمم بواسطة حامد محمود </p>
+          <p>© {new Date().getFullYear()} نيو تك. جميع الحقوق محفوظة</p>
+          <p className="text-xs opacity-70">التطوير التقني: حامد محمود</p>
         </div>
       </div>
     </footer>

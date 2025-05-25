@@ -103,9 +103,9 @@ const Home = ({ addToCart, showToast }) => {
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-4">
           {[
             { icon: "📱", label: "الهواتف", link: "/phones" },
-            { icon: "🎧", label: "سماعات", link: "/headphones" },
-            { icon: "🔋", label: "شواحن", link: "/chargers" },
-            { icon: "🔌", label: "باور بانك", link: "/power-banks" },
+            { icon: "🎧", label: "سماعات", link: "/Accessories" },
+            { icon: "🔋", label: "شواحن", link: "/Accessories" },
+            { icon: "⌚", label: " ساعات ذكية", link: "/Wearables" },
           ].map((item, index) => (
             <Link
               key={index}
