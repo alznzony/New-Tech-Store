@@ -391,7 +391,7 @@ export default function Supervisor() {
                           </div>
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                          {product.price} ر.س
+                          {product.price} ج.س
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                           {product.category}
